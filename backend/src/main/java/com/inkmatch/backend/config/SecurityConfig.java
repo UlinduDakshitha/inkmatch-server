@@ -1,5 +1,4 @@
 package com.inkmatch.backend.config;
-
 import com.inkmatch.backend.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;

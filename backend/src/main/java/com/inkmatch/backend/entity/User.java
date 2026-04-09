@@ -1,5 +1,4 @@
 package com.inkmatch.backend.entity;
-
 import com.inkmatch.backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
