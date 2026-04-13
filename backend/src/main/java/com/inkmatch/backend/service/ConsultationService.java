@@ -5,6 +5,7 @@ import com.inkmatch.backend.entity.Consultation;
 import com.inkmatch.backend.entity.User;
 import com.inkmatch.backend.enums.ConsultationStatus;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
+import com.inkmatch.backend.repository.ConsultationRepository;
 import com.inkmatch.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
