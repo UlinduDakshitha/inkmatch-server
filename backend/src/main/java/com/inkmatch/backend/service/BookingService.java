@@ -5,6 +5,7 @@ import com.inkmatch.backend.entity.Booking;
 import com.inkmatch.backend.entity.User;
 import com.inkmatch.backend.enums.BookingStatus;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
+import com.inkmatch.backend.repository.BookingRepository;
 import com.inkmatch.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
