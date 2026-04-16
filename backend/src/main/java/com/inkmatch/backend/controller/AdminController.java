@@ -1,12 +1,21 @@
 package com.inkmatch.backend.controller;
 
+import com.inkmatch.backend.service.AdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
+
+    private final AdminService adminService;
 
     @PutMapping("/verify/{userId}")
     public void verify(@PathVariable Long userId){
-        adminService.approveArtist(userId);
+        adminService.verifyArtist(userId);
     }
 }
