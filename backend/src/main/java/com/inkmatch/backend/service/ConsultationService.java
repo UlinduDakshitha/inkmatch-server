@@ -20,8 +20,9 @@ public class ConsultationService {
     private final ConsultationRepository consultationRepository;
     private final UserRepository userRepository;
     private final ArtistProfileRepository artistRepository;
+    private final NotificationService notificationService; // 🔥 add karapu eka
 
-    // Customer sends consultation
+    // 🟢 Customer sends consultation
     public Consultation create(Long customerId, Long artistId, Consultation consultation) {
 
         User customer = userRepository.findById(customerId)
@@ -38,7 +39,7 @@ public class ConsultationService {
         return consultationRepository.save(consultation);
     }
 
-    // Artist approves/rejects
+    // 🟡 Artist approves / rejects consultation
     public Consultation updateStatus(Long id, ConsultationStatus status) {
 
         Consultation consultation = consultationRepository.findById(id)
@@ -46,9 +47,18 @@ public class ConsultationService {
 
         consultation.setStatus(status);
 
+        // 🔥 Notification send karanawa ONLY if accepted
+        if (status == ConsultationStatus.APPROVED) {
+            notificationService.sendNotification(
+                    consultation.getCustomer().getId(),
+                    "Your consultation has been accepted!"
+            );
+        }
+
         return consultationRepository.save(consultation);
     }
 
+    // 🔵 Get all consultations
     public List<Consultation> getAll() {
         return consultationRepository.findAll();
     }
