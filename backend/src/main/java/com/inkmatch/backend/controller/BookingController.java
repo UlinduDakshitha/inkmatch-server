@@ -22,14 +22,13 @@ public class BookingController {
         return bookingService.create(customerId, artistId, booking);
     }
 
-    @PutMapping("/{id}")
-    public Booking updateStatus(@PathVariable Long id,
-                                @RequestParam BookingStatus status) {
+    @PutMapping("/{id}/status")
+    public Booking updateStatus(@PathVariable Long id, @RequestParam BookingStatus status){
         return bookingService.updateStatus(id, status);
     }
 
-    @GetMapping
-    public List<Booking> getAll() {
-        return bookingService.getAll();
+    @PostMapping("/create/{consultationId}")
+    public Booking create(@PathVariable Long consultationId){
+        return bookingService.createBooking(consultationId);
     }
 }

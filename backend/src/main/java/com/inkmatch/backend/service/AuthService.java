@@ -1,6 +1,5 @@
 package com.inkmatch.backend.service;
 
-import com.inkmatch.backend.dto.*;
 import com.inkmatch.backend.dto.request.LoginRequest;
 import com.inkmatch.backend.dto.request.RegisterRequest;
 import com.inkmatch.backend.entity.User;
