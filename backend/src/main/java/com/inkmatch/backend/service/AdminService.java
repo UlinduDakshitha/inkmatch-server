@@ -20,4 +20,13 @@ public class AdminService {
 
         artistRepository.save(artist);
     }
+    public void approveArtist(Long userId){
+
+        ArtistProfile artist = artistRepository.findByUserId(userId)
+                .orElseThrow();
+
+        artist.setVerified(true);
+
+        artistRepository.save(artist);
+    }
 }
