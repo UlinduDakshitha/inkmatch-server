@@ -3,6 +3,7 @@ package com.inkmatch.backend.service;
 import com.inkmatch.backend.dto.request.LoginRequest;
 import com.inkmatch.backend.dto.request.RegisterRequest;
 import com.inkmatch.backend.entity.User;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.UserRepository;
 import com.inkmatch.backend.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class AuthService {
     public String register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new ResourceNotFoundException("Email already exists");
         }
 
         User user = User.builder()
@@ -42,10 +43,10 @@ public class AuthService {
     public String login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new ResourceNotFoundException("Invalid password");
         }
 
         return jwtUtil.generateToken(user.getEmail());
