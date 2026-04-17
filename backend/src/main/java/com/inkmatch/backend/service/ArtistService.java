@@ -3,6 +3,7 @@ package com.inkmatch.backend.service;
 import com.inkmatch.backend.dto.request.ArtistProfileDTO;
 import com.inkmatch.backend.entity.ArtistProfile;
 import com.inkmatch.backend.entity.User;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
 import com.inkmatch.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class ArtistService {
     public ArtistProfile createProfile(Long userId, ArtistProfileDTO dto) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         ArtistProfile profile = ArtistProfile.builder()
                 .user(user)
