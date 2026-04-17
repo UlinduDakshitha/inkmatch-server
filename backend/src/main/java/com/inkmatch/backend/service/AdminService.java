@@ -1,6 +1,7 @@
 package com.inkmatch.backend.service;
 
 import com.inkmatch.backend.entity.ArtistProfile;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class AdminService {
     public void verifyArtist(Long userId){
 
         ArtistProfile artist = artistRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Artist profile not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Artist profile not found"));
 
         artist.setVerified(true);
 
