@@ -6,6 +6,7 @@ import com.inkmatch.backend.entity.Consultation;
 import com.inkmatch.backend.entity.User;
 import com.inkmatch.backend.enums.BookingStatus;
 import com.inkmatch.backend.enums.ConsultationStatus;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
 import com.inkmatch.backend.repository.BookingRepository;
 import com.inkmatch.backend.repository.ConsultationRepository;
@@ -30,10 +31,10 @@ public class BookingService {
     public Booking create(Long customerId, Long artistId, Booking booking) {
 
         User customer = userRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         ArtistProfile artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new RuntimeException("Artist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
 
         booking.setCustomer(customer);
         booking.setArtist(artist);
@@ -47,10 +48,10 @@ public class BookingService {
     public Booking createBooking(Long consultationId){
 
         Consultation consultation = consultationRepository.findById(consultationId)
-                .orElseThrow(() -> new RuntimeException("Consultation not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation not found"));
 
         if(consultation.getStatus() != ConsultationStatus.APPROVED){
-            throw new RuntimeException("Consultation not accepted yet");
+            throw new ResourceNotFoundException("Consultation not accepted yet");
         }
 
         Booking booking = new Booking();
@@ -75,7 +76,7 @@ public class BookingService {
     public Booking updateStatus(Long bookingId, BookingStatus status){
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
         booking.setStatus(status);
 
