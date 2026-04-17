@@ -4,6 +4,7 @@ import com.inkmatch.backend.entity.ArtistProfile;
 import com.inkmatch.backend.entity.Consultation;
 import com.inkmatch.backend.entity.User;
 import com.inkmatch.backend.enums.ConsultationStatus;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
 import com.inkmatch.backend.repository.ConsultationRepository;
 import com.inkmatch.backend.repository.UserRepository;
@@ -26,10 +27,10 @@ public class ConsultationService {
     public Consultation create(Long customerId, Long artistId, Consultation consultation) {
 
         User customer = userRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         ArtistProfile artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new RuntimeException("Artist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
 
         consultation.setCustomer(customer);
         consultation.setArtist(artist);
@@ -43,7 +44,7 @@ public class ConsultationService {
     public Consultation updateStatus(Long id, ConsultationStatus status) {
 
         Consultation consultation = consultationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Consultation not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation not found"));
 
         consultation.setStatus(status);
 
