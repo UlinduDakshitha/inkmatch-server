@@ -1,8 +1,8 @@
 package com.inkmatch.backend.service;
-
 import com.inkmatch.backend.entity.ArtistProfile;
 import com.inkmatch.backend.entity.Portfolio;
 import com.inkmatch.backend.entity.PortfolioImage;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
 import com.inkmatch.backend.repository.PortfolioImageRepository;
 import com.inkmatch.backend.repository.PortfolioRepository;
@@ -35,7 +35,7 @@ public class PortfolioService {
     public Portfolio createPortfolio(Long artistId, Portfolio portfolio) {
 
         ArtistProfile artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new RuntimeException("Artist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
 
         portfolio.setArtist(artist);
         portfolio.setCreatedAt(LocalDateTime.now());
@@ -46,7 +46,7 @@ public class PortfolioService {
     public String uploadAndSave(Long portfolioId, MultipartFile file) throws IOException {
 
         if (!portfolioRepository.existsById(portfolioId)) {
-            throw new RuntimeException("Portfolio not found");
+            throw new ResourceNotFoundException("Portfolio not found");
         }
 
         String url = imageService.upload(file);
