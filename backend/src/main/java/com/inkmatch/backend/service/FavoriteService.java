@@ -1,7 +1,7 @@
 package com.inkmatch.backend.service;
-
 import com.inkmatch.backend.entity.Favorite;
 import com.inkmatch.backend.entity.User;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.FavoriteRepository;
 import com.inkmatch.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +25,10 @@ public class FavoriteService {
             favoriteRepository.delete(existing.get());
         } else {
             User customer = userRepository.findById(userId)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
             User artist = userRepository.findById(artistId)
-                    .orElseThrow(() -> new RuntimeException("Artist not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
 
             Favorite fav = new Favorite();
             fav.setCustomer(customer);
