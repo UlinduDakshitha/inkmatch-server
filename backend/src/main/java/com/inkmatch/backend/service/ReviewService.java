@@ -1,6 +1,7 @@
 package com.inkmatch.backend.service;
 import com.inkmatch.backend.entity.Review;
 import com.inkmatch.backend.enums.BookingStatus;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.BookingRepository;
 import com.inkmatch.backend.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class ReviewService {
                 );
 
         if(!hasCompletedBooking){
-            throw new RuntimeException("You must complete a booking to review");
+            throw new ResourceNotFoundException("You must complete a booking to review");
         }
 
         return reviewRepository.save(review);
