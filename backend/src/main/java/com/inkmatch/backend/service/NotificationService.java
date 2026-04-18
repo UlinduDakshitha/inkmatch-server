@@ -1,5 +1,4 @@
 package com.inkmatch.backend.service;
-
 import com.inkmatch.backend.entity.Notification;
 import com.inkmatch.backend.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
