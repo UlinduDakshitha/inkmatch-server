@@ -1,8 +1,7 @@
 package com.inkmatch.backend.service;
-
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -11,7 +10,7 @@ public class ImageService {
 
     public String upload(MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
-            throw new RuntimeException("Image file is required");
+            throw new ResourceNotFoundException("Image file is required");
         }
 
         // Placeholder upload URL. Replace with Cloudinary/S3 integration when configured.
