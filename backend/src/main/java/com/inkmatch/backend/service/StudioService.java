@@ -2,6 +2,7 @@ package com.inkmatch.backend.service;
 
 import com.inkmatch.backend.entity.Studio;
 import com.inkmatch.backend.entity.User;
+import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.StudioRepository;
 import com.inkmatch.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class StudioService {
     public Studio createStudio(Long ownerId, Studio studio) {
 
         User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         studio.setOwner(owner);
         studio.setVerified(false);
