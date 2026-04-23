@@ -3,7 +3,7 @@ package com.inkmatch.backend.service;
 import com.inkmatch.backend.dto.request.LoginRequest;
 import com.inkmatch.backend.dto.request.RegisterRequest;
 import com.inkmatch.backend.entity.User;
-import com.inkmatch.backend.exception.ResourceNotFoundException;
+import com.inkmatch.backend.exception.BadRequestException;
 import com.inkmatch.backend.repository.UserRepository;
 import com.inkmatch.backend.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,10 @@ public class AuthService {
 
     public String register(RegisterRequest request) {
 
+        validateRegisterRequest(request);
+
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new ResourceNotFoundException("Email already exists");
+            throw new BadRequestException("Email already exists");
         }
 
         User user = User.builder()
@@ -42,13 +44,56 @@ public class AuthService {
 
     public String login(LoginRequest request) {
 
+        validateLoginRequest(request);
+
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new BadRequestException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new ResourceNotFoundException("Invalid password");
+            throw new BadRequestException("Invalid email or password");
         }
 
         return jwtUtil.generateToken(user.getEmail());
     }
+
+    private void validateRegisterRequest(RegisterRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Request body is required");
+        }
+
+        if (isBlank(request.getFullName())) {
+            throw new BadRequestException("Full name is required");
+        }
+
+        if (isBlank(request.getEmail())) {
+            throw new BadRequestException("Email is required");
+        }
+
+        if (isBlank(request.getPassword())) {
+            throw new BadRequestException("Password is required");
+        }
+
+        if (request.getRole() == null) {
+            throw new BadRequestException("Role is required");
+        }
+    }
+
+    private void validateLoginRequest(LoginRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Request body is required");
+        }
+
+        if (isBlank(request.getEmail())) {
+            throw new BadRequestException("Email is required");
+        }
+
+        if (isBlank(request.getPassword())) {
+            throw new BadRequestException("Password is required");
+        }
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
+    }
 }
+
