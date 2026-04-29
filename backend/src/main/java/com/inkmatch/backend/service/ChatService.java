@@ -1,18 +1,12 @@
 package com.inkmatch.backend.service;
 
+import com.inkmatch.backend.config.GeminiConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ChatService {
@@ -21,44 +15,61 @@ public class ChatService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private OpenAIConfig config;
-
-    @Value("${openai.model}")
-    private String model;
+    private GeminiConfig config;
 
     public String getReply(String userMessage) {
 
-        String url = "https://api.openai.com/v1/chat/completions";
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/"
+                + config.getModel()
+                + ":generateContent?key=" + config.getApiKey();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(config.getApiKey());
+
+        // 🔥 SYSTEM PROMPT (VERY IMPORTANT)
+        String systemPrompt = """
+                You are an AI assistant for InkMatch tattoo marketplace.
+                Help users to:
+                - find tattoo artists
+                - understand pricing
+                - guide booking process
+                - suggest tattoo styles
+                Keep answers short and helpful.
+                """;
 
         Map<String, Object> body = new HashMap<>();
-        body.put("model", model);
 
-        List<Map<String, String>> messages = new ArrayList<>();
+        Map<String, Object> part = Map.of(
+                "text", systemPrompt + "\nUser: " + userMessage
+        );
 
-        // System prompt (IMPORTANT for your project)
-        messages.add(Map.of(
-                "role", "system",
-                "content", "You are a helpful tattoo assistant for InkMatch platform. Help users find tattoo artists, explain booking, pricing, and styles."
-        ));
+        Map<String, Object> content = Map.of(
+                "parts", List.of(part)
+        );
 
-        messages.add(Map.of(
-                "role", "user",
-                "content", userMessage
-        ));
+        body.put("contents", List.of(content));
 
-        body.put("messages", messages);
+        HttpEntity<Map<String, Object>> request =
+                new HttpEntity<>(body, headers);
 
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+        try {
+            ResponseEntity<Map> response =
+                    restTemplate.postForEntity(url, request, Map.class);
 
-        ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
+            List<Map<String, Object>> candidates =
+                    (List<Map<String, Object>>) response.getBody().get("candidates");
 
-        List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
-        Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
+            Map<String, Object> first = candidates.get(0);
+            Map<String, Object> contentMap =
+                    (Map<String, Object>) first.get("content");
 
-        return message.get("content").toString();
+            List<Map<String, Object>> parts =
+                    (List<Map<String, Object>>) contentMap.get("parts");
+
+            return parts.get(0).get("text").toString();
+
+        } catch (Exception e) {
+            return "AI response error 😢";
+        }
     }
 }
