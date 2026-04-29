@@ -24,4 +24,9 @@ public class ArtistProfile {
     private String location;
     private boolean verified;
     private double rating;
+
+    private String name;
+    private String city;
+    private String style;
+
 }
