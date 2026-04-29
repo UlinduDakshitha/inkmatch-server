@@ -1,22 +1,23 @@
 package com.inkmatch.backend.config;
 
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class OpenAIConfig {
+public class GeminiConfig {
 
-    @Value("${openai.api.key}")
+    @Value("${gemini.api.key}")
     private String apiKey;
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+    @Value("${gemini.model}")
+    private String model;
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public String getModel() {
+        return model;
     }
 }

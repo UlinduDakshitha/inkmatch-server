@@ -1,6 +1,5 @@
 package com.inkmatch.backend.service;
 
-import com.inkmatch.backend.config.OpenAIConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
