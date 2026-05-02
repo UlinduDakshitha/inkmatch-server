@@ -1,5 +1,4 @@
 package com.inkmatch.backend.controller;
-
 import com.inkmatch.backend.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
