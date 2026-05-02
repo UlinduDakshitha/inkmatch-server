@@ -23,4 +23,22 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendWelcomeEmail(String toEmail, String username) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(toEmail);
+        message.setSubject("Welcome to InkMatch 🎨");
+
+        message.setText(
+                "Hi " + username + ",\n\n" +
+                        "Welcome to InkMatch!\n\n" +
+                        "You can now discover tattoo artists, explore designs, and book appointments easily.\n\n" +
+                        "Enjoy your journey! 🚀\n\n" +
+                        "- InkMatch Team"
+        );
+
+        mailSender.send(message);
+    }
 }
