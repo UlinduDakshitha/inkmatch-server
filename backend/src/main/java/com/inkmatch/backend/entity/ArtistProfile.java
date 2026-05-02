@@ -1,5 +1,6 @@
 package com.inkmatch.backend.entity;
 
+import com.inkmatch.backend.enums.VerificationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,5 +30,9 @@ public class ArtistProfile {
     private String name;
     private String city;
     private String style;
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    private VerificationStatus verificationStatus;
 
 }
