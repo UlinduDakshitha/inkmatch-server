@@ -7,6 +7,7 @@ import com.inkmatch.backend.exception.BadRequestException;
 import com.inkmatch.backend.repository.UserRepository;
 import com.inkmatch.backend.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthService {
 
+    @Autowired
+    private EmailService emailService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -39,6 +42,18 @@ public class AuthService {
 
         userRepository.save(user);
 
+        // 🔥 SEND WELCOME EMAIL (IMPORTANT)
+        try {
+            emailService.sendWelcomeEmail(
+                    user.getEmail(),
+                    user.getFullName()
+            );
+        } catch (Exception e) {
+            // ❗ email fail unath register eka break wenna epa
+            System.out.println("Email sending failed: " + e.getMessage());
+        }
+
+        // 🔐 JWT token return
         return jwtUtil.generateToken(user.getEmail());
     }
 
