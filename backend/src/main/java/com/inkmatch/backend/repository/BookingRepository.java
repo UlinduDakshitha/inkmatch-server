@@ -17,4 +17,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByStudioId(Long studioId);
 
+     
+
 }

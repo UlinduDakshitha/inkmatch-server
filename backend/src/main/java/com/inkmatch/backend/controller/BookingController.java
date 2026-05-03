@@ -51,4 +51,8 @@ public class BookingController {
     public List<Booking> getStudioBookings(@PathVariable Long studioId) {
         return bookingRepository.findByStudioId(studioId);
     }
+    @GetMapping("/customer/{customerId}")
+    public List<Booking> getCustomerBookings(@PathVariable Long customerId) {
+        return bookingRepository.findByCustomerId(customerId);
+    }
 }
