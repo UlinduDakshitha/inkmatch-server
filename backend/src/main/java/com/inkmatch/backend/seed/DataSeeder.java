@@ -1,5 +1,4 @@
 package com.inkmatch.backend.seed;
-
 import com.inkmatch.backend.entity.User;
 import com.inkmatch.backend.enums.Role;
 import com.inkmatch.backend.repository.UserRepository;

@@ -4,7 +4,9 @@ import com.inkmatch.backend.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -28,6 +30,10 @@ public class Booking {
     private String bookingTime;
 
     private String notes;
+
+    private LocalDate date;
+    private LocalTime time;
+    private String studioLocation;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
