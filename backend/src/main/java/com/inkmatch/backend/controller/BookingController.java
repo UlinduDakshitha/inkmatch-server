@@ -2,6 +2,7 @@ package com.inkmatch.backend.controller;
 
 import com.inkmatch.backend.entity.Booking;
 import com.inkmatch.backend.enums.BookingStatus;
+import com.inkmatch.backend.repository.BookingRepository;
 import com.inkmatch.backend.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final BookingRepository bookingRepository;
 
     @PostMapping("/{customerId}/{artistId}")
     public Booking create(@PathVariable Long customerId,
@@ -30,5 +32,19 @@ public class BookingController {
     @PostMapping("/create/{consultationId}")
     public Booking create(@PathVariable Long consultationId){
         return bookingService.createBooking(consultationId);
+    }
+
+    @GetMapping("/artist/{artistId}")
+    public List<Booking> getArtistBookings(@PathVariable Long artistId) {
+        return bookingRepository.findByArtistId(artistId);
+    }
+    @PutMapping("/confirm/{id}")
+    public void confirm(@PathVariable Long id) {
+        bookingService.confirmBooking(id);
+    }
+
+    @PutMapping("/reject/{id}")
+    public void reject(@PathVariable Long id) {
+        bookingService.rejectBooking(id);
     }
 }

@@ -14,4 +14,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     boolean existsByCustomerIdAndArtistIdAndStatus(Long customerId, Long artistId, BookingStatus status);
     long count();
+
+    
+
 }
