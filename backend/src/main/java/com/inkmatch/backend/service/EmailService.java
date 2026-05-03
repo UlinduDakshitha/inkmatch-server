@@ -41,4 +41,29 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendBookingConfirmationEmail(
+            String toEmail,
+            String artistName,
+            String date,
+            String time,
+            String location
+    ) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(toEmail);
+        message.setSubject("Booking Confirmed 🎉");
+
+        message.setText(
+                "Your tattoo booking is confirmed!\n\n" +
+                        "Artist: " + artistName + "\n" +
+                        "Date: " + date + "\n" +
+                        "Time: " + time + "\n" +
+                        "Studio: " + location + "\n\n" +
+                        "Thank you for choosing InkMatch!"
+        );
+
+        mailSender.send(message);
+    }
 }
