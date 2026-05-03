@@ -47,4 +47,8 @@ public class BookingController {
     public void reject(@PathVariable Long id) {
         bookingService.rejectBooking(id);
     }
+    @GetMapping("/studio/{studioId}")
+    public List<Booking> getStudioBookings(@PathVariable Long studioId) {
+        return bookingRepository.findByStudioId(studioId);
+    }
 }
