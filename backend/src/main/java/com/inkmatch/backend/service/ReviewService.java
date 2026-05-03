@@ -29,7 +29,7 @@ public class ReviewService {
                 bookingRepository.existsByCustomerIdAndArtistIdAndStatus(
                         review.getCustomer().getId(),
                         review.getArtist().getId(),
-                        BookingStatus.COMPLETED
+                        BookingStatus.CONFIRMED
                 );
 
         if(!hasCompletedBooking){

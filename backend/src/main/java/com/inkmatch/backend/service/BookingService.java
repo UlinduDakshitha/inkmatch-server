@@ -1,5 +1,6 @@
 package com.inkmatch.backend.service;
 
+import com.inkmatch.backend.dto.request.BookingRequest;
 import com.inkmatch.backend.entity.ArtistProfile;
 import com.inkmatch.backend.entity.AvailabilitySlot;
 import com.inkmatch.backend.entity.Booking;
@@ -45,6 +46,29 @@ public class BookingService {
         booking.setCreatedAt(LocalDateTime.now());
 
         reserveAvailabilitySlot(artistId, booking.getDate(), booking.getTime());
+
+        return bookingRepository.save(booking);
+    }
+
+    public Booking createBooking(BookingRequest request) {
+
+        User customer = userRepository.findById(request.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+
+        ArtistProfile artist = artistRepository.findById(request.getArtistId())
+                .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
+
+        reserveAvailabilitySlot(request.getArtistId(), request.getDate(), request.getTime());
+
+        Booking booking = new Booking();
+        booking.setCustomer(customer);
+        booking.setArtist(artist);
+        booking.setDate(request.getDate());
+        booking.setTime(request.getTime());
+        booking.setStudioLocation(request.getStudioLocation());
+        booking.setNotes(request.getNotes());
+        booking.setStatus(BookingStatus.PENDING);
+        booking.setCreatedAt(LocalDateTime.now());
 
         return bookingRepository.save(booking);
     }
@@ -95,13 +119,6 @@ public class BookingService {
             );
         }
 
-        // 🔔 Notification when completed
-        if(status == BookingStatus.COMPLETED){
-            notificationService.sendNotification(
-                    booking.getCustomer().getId(),
-                    "Your booking has been completed!"
-            );
-        }
 
         return updatedBooking;
     }
