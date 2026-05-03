@@ -145,6 +145,15 @@ public class BookingService {
         );
     }
 
+    public void rejectBooking(Long bookingId) {
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+
+        booking.setStatus(BookingStatus.REJECTED);
+        bookingRepository.save(booking);
+    }
+
     private String getArtistDisplayName(ArtistProfile artist) {
         if (artist == null) {
             return "Artist";
