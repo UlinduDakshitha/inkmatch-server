@@ -1,20 +1,21 @@
 package com.inkmatch.backend.service;
 
 import com.inkmatch.backend.entity.ArtistProfile;
+import com.inkmatch.backend.entity.AvailabilitySlot;
 import com.inkmatch.backend.entity.Booking;
 import com.inkmatch.backend.entity.Consultation;
 import com.inkmatch.backend.entity.User;
 import com.inkmatch.backend.enums.BookingStatus;
 import com.inkmatch.backend.enums.ConsultationStatus;
+import com.inkmatch.backend.exception.BadRequestException;
 import com.inkmatch.backend.exception.ResourceNotFoundException;
-import com.inkmatch.backend.repository.ArtistProfileRepository;
-import com.inkmatch.backend.repository.BookingRepository;
-import com.inkmatch.backend.repository.ConsultationRepository;
-import com.inkmatch.backend.repository.UserRepository;
+import com.inkmatch.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -26,7 +27,8 @@ public class BookingService {
     private final ArtistProfileRepository artistRepository;
     private final ConsultationRepository consultationRepository;
     private final NotificationService notificationService;
-    private final EmailService emailService;// 🔥 ADD THIS
+    private final EmailService emailService;
+    private final AvailabilityRepository availabilityRepository;
 
     // 🟢 Create booking manually
     public Booking create(Long customerId, Long artistId, Booking booking) {
@@ -41,6 +43,8 @@ public class BookingService {
         booking.setArtist(artist);
         booking.setStatus(BookingStatus.PENDING);
         booking.setCreatedAt(LocalDateTime.now());
+
+        reserveAvailabilitySlot(artistId, booking.getDate(), booking.getTime());
 
         return bookingRepository.save(booking);
     }
@@ -162,5 +166,21 @@ public class BookingService {
         }
 
         return "N/A";
+    }
+
+    private void reserveAvailabilitySlot(Long artistId, LocalDate date, LocalTime time) {
+        if (date == null || time == null) {
+            throw new BadRequestException("Booking date and time are required");
+        }
+
+        AvailabilitySlot slot = availabilityRepository
+                .findByArtistIdAndDate(artistId, date)
+                .stream()
+                .filter(s -> time.equals(s.getTime()) && !s.isBooked())
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("Slot not available"));
+
+        slot.setBooked(true);
+        availabilityRepository.save(slot);
     }
 }
