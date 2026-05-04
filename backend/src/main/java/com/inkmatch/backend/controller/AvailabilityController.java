@@ -31,4 +31,6 @@ public class AvailabilityController {
                 LocalDate.parse(date)
         );
     }
+
+
 }

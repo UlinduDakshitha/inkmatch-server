@@ -34,4 +34,9 @@ public class ConsultationController {
     public List<Consultation> getAll() {
         return consultationService.getAll();
     }
+
+    @PostMapping
+    public Consultation create(@RequestBody Consultation consultation) {
+        return consultationService.create(consultation);
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface ConsultationRepository extends JpaRepository<Consultation, Long> {
 
     // Optional (useful for dashboard)
-    List<Consultation> findByCustomerId(Long customerId);
+    List<Consultation> findByCustomer_Id(Long customerId);
 
-    List<Consultation> findByArtistId(Long artistId);
+    List<Consultation> findByArtist_Id(Long artistId);
 }

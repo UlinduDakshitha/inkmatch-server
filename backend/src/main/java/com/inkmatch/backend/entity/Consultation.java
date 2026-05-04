@@ -4,7 +4,9 @@ import com.inkmatch.backend.enums.ConsultationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -30,6 +32,16 @@ public class Consultation {
     private String budget;
 
     private String referenceImageUrl;
+
+    @Transient
+    private Long artistId;
+    @Transient
+    private Long customerId;
+
+    private LocalDate date;
+    private LocalTime time;
+
+
 
     @Enumerated(EnumType.STRING)
     private ConsultationStatus status;

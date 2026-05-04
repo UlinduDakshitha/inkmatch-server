@@ -4,6 +4,7 @@ import com.inkmatch.backend.entity.ArtistProfile;
 import com.inkmatch.backend.entity.Consultation;
 import com.inkmatch.backend.entity.User;
 import com.inkmatch.backend.enums.ConsultationStatus;
+import com.inkmatch.backend.exception.BadRequestException;
 import com.inkmatch.backend.exception.ResourceNotFoundException;
 import com.inkmatch.backend.repository.ArtistProfileRepository;
 import com.inkmatch.backend.repository.ConsultationRepository;
@@ -38,6 +39,15 @@ public class ConsultationService {
         consultation.setCreatedAt(LocalDateTime.now());
 
         return consultationRepository.save(consultation);
+    }
+
+    // 🟢 Create consultation from request body values
+    public Consultation create(Consultation consultation) {
+        if (consultation.getCustomerId() == null || consultation.getArtistId() == null) {
+            throw new BadRequestException("customerId and artistId are required");
+        }
+
+        return create(consultation.getCustomerId(), consultation.getArtistId(), consultation);
     }
 
     // 🟡 Artist approves / rejects consultation
