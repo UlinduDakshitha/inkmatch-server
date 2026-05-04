@@ -2,7 +2,7 @@ package com.inkmatch.backend.controller;
 
 import com.inkmatch.backend.entity.Booking;
 import com.inkmatch.backend.enums.BookingStatus;
-import com.inkmatch.backend.repository.BookingRepository;
+// ...existing imports...
 import com.inkmatch.backend.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,6 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final BookingRepository bookingRepository;
 
     @PostMapping("/{customerId}/{artistId}")
     public Booking create(@PathVariable Long customerId,
@@ -36,7 +35,7 @@ public class BookingController {
 
     @GetMapping("/artist/{artistId}")
     public List<Booking> getArtistBookings(@PathVariable Long artistId) {
-        return bookingRepository.findByArtistId(artistId);
+        return bookingService.getArtistBookings(artistId);
     }
     @PutMapping("/confirm/{id}")
     public void confirm(@PathVariable Long id) {
@@ -49,10 +48,16 @@ public class BookingController {
     }
     @GetMapping("/studio/{studioId}")
     public List<Booking> getStudioBookings(@PathVariable Long studioId) {
-        return bookingRepository.findByStudioId(studioId);
+        return bookingService.getStudioBookings(studioId);
     }
     @GetMapping("/customer/{customerId}")
     public List<Booking> getCustomerBookings(@PathVariable Long customerId) {
-        return bookingRepository.findByCustomerId(customerId);
+        return bookingService.getCustomerBookings(customerId);
+    }
+
+    // Create booking from generic Booking payload
+    @PostMapping
+    public Booking create(@RequestBody Booking booking) {
+        return bookingService.create(booking);
     }
 }

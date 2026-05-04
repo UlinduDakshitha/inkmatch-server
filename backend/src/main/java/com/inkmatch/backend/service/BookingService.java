@@ -209,4 +209,20 @@ public class BookingService {
         slot.setBooked(true);
         availabilityRepository.save(slot);
     }
+    public List<Booking> getArtistBookings(Long artistId) {
+        return bookingRepository.findByArtistId(artistId);
+    }
+
+    public List<Booking> getCustomerBookings(Long customerId) {
+        return bookingRepository.findByCustomerId(customerId);
+    }
+
+    public List<Booking> getStudioBookings(Long studioId) {
+        return bookingRepository.findByStudioId(studioId);
+    }
+
+    public Booking create(Booking booking) {
+        booking.setStatus(BookingStatus.PENDING);
+        return bookingRepository.save(booking);
+    }
 }
