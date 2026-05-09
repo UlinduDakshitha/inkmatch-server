@@ -19,9 +19,11 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Transient
     private Long customerId;
-
+    @Transient
     private Long artistId;
+    @Transient
     private Long studioId;
     @ManyToOne
     private User customer;
