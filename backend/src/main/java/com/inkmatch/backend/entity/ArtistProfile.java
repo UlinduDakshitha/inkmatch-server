@@ -31,6 +31,7 @@ public class ArtistProfile {
     private String city;
     private String style;
     private String email;
+    private boolean suspended;
 
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;

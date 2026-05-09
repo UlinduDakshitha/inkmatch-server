@@ -31,4 +31,6 @@ public class User {
     private Boolean isActive;
 
     private LocalDateTime createdAt;
+
+    private boolean verified;
 }
