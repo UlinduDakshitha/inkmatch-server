@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    List<Booking> findByCustomerId(Long customerId);
+    List<Booking> findByCustomer_Id(Long customerId);
 
-    List<Booking> findByArtistId(Long artistId);
+    List<Booking> findByArtist_Id(Long artistId);
 
-    boolean existsByCustomerIdAndArtistIdAndStatus(Long customerId, Long artistId, BookingStatus status);
+    boolean existsByCustomer_IdAndArtist_IdAndStatus(Long customerId, Long artistId, BookingStatus status);
     long count();
 
-    List<Booking> findByStudioId(Long studioId);
+    List<Booking> findByStudio_Id(Long studioId);
 
      
 

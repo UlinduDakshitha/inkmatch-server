@@ -7,6 +7,7 @@ import com.inkmatch.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,7 +20,7 @@ public class FavoriteService {
     public void toggleFavorite(Long userId, Long artistId){
 
         Optional<Favorite> existing =
-                favoriteRepository.findByCustomerIdAndArtistId(userId, artistId);
+                favoriteRepository.findByCustomer_IdAndArtist_Id(userId, artistId);
 
         if(existing.isPresent()){
             favoriteRepository.delete(existing.get());
@@ -35,5 +36,9 @@ public class FavoriteService {
             fav.setArtist(artist);
             favoriteRepository.save(fav);
         }
+    }
+
+    public List<Favorite> getFavoritesByCustomer(Long customerId) {
+        return favoriteRepository.findByCustomer_Id(customerId);
     }
 }

@@ -21,12 +21,12 @@ public class ReviewService {
     }
 
     public List<Review> getByArtist(Long artistId) {
-        return reviewRepository.findByArtistId(artistId);
+        return reviewRepository.findByArtist_Id(artistId);
     }
     public Review addReview(Review review){
 
         boolean hasCompletedBooking =
-                bookingRepository.existsByCustomerIdAndArtistIdAndStatus(
+                bookingRepository.existsByCustomer_IdAndArtist_IdAndStatus(
                         review.getCustomer().getId(),
                         review.getArtist().getId(),
                         BookingStatus.CONFIRMED

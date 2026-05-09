@@ -23,6 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingService {
 
+    private static final String BOOKING_NOT_FOUND = "Booking not found";
+
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ArtistProfileRepository artistRepository;
@@ -105,7 +107,7 @@ public class BookingService {
     public Booking updateStatus(Long bookingId, BookingStatus status){
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(BOOKING_NOT_FOUND));
 
         booking.setStatus(status);
 
@@ -131,7 +133,7 @@ public class BookingService {
     public void confirmBooking(Long bookingId) {
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(BOOKING_NOT_FOUND));
 
         booking.setStatus(BookingStatus.CONFIRMED);
         Booking confirmedBooking = bookingRepository.save(booking);
@@ -148,7 +150,7 @@ public class BookingService {
     public void rejectBooking(Long bookingId) {
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(BOOKING_NOT_FOUND));
 
         booking.setStatus(BookingStatus.REJECTED);
         bookingRepository.save(booking);
@@ -210,15 +212,15 @@ public class BookingService {
         availabilityRepository.save(slot);
     }
     public List<Booking> getArtistBookings(Long artistId) {
-        return bookingRepository.findByArtistId(artistId);
+        return bookingRepository.findByArtist_Id(artistId);
     }
 
     public List<Booking> getCustomerBookings(Long customerId) {
-        return bookingRepository.findByCustomerId(customerId);
+        return bookingRepository.findByCustomer_Id(customerId);
     }
 
     public List<Booking> getStudioBookings(Long studioId) {
-        return bookingRepository.findByStudioId(studioId);
+        return bookingRepository.findByStudio_Id(studioId);
     }
 
     public Booking create(Booking booking) {
