@@ -26,6 +26,7 @@ public class AvailabilityController {
             @PathVariable Long artistId,
             @PathVariable String date
     ) {
+
         return availabilityRepository.findByArtistIdAndDate(
                 artistId,
                 LocalDate.parse(date)
