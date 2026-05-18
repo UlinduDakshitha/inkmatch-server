@@ -15,6 +15,7 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
+
     @PostMapping("/{userId}")
     public ArtistProfile create(@PathVariable Long userId,
                                 @RequestBody ArtistProfileDTO dto) {
