@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping("/api/artists")
 @RequiredArgsConstructor
 public class ArtistController {
+
     private final ArtistService artistService;
 
     @PostMapping("/{userId}")
