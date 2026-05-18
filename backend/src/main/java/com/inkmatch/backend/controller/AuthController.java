@@ -1,5 +1,4 @@
 package com.inkmatch.backend.controller;
-
 import com.inkmatch.backend.dto.request.LoginRequest;
 import com.inkmatch.backend.dto.request.RegisterRequest;
 import com.inkmatch.backend.dto.response.AuthResponse;
