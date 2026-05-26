@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GeminiConfig {
 
-
     @Value("${gemini.api.key}")
     private String apiKey;
 
