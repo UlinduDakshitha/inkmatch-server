@@ -10,6 +10,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AdminController {
 
+
     private final AdminService adminService;
 
     @PutMapping("/verify/{userId}")
